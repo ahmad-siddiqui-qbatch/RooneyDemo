@@ -26,7 +26,7 @@
               :type="showPassword ? 'text' : 'password'"
               placeholder="Enter Password"
               class="w-100 input-form-control"
-              @blur="clickOutside"
+              @blur="clickOutside('password')"
               @input="calculatePasswordStrength"
               @keydown.enter.prevent="submitForm"
             />
@@ -46,8 +46,8 @@
               <span class="mdi mdi-eye-outline"></span>
             </v-icon>
           </div>
-          <span v-if="showErrorMessage" class="text-xs pt-1 d-block error-message">
-            Password must contain a capital letter, a small letter, a number, and a symbol
+          <span v-if="showErrorMessage.password" class="text-xs pt-1 d-block error-message">
+            {{ errorMessage.password }}
           </span>
 
           <!-- Confirm Password input field -->
@@ -58,6 +58,7 @@
               :type="showConfirmPassword ? 'text' : 'password'"
               placeholder="Enter Confirm Password"
               class="w-100 input-form-control"
+              @blur="clickOutside('confirmPassword')"
               @keydown.enter.prevent="submitForm"
             />
             <!-- Confirm Password visibility toggle -->
@@ -76,9 +77,9 @@
               <span class="mdi mdi-eye-outline"></span>
             </v-icon>
           </div>
-          <div v-if="passwordMatched && confirmPassword !== ''" class="success-message">
-            Password matched
-          </div>
+          <span v-if="showErrorMessage.confirmPassword" class="text-xs pt-1 d-block error-message">
+            {{ errorMessage.confirmPassword }}
+          </span>
         </v-form>
         <!-- Reset Password button -->
         <v-btn @click="submitForm" class="form-btn bg-primary mt-10" flat>
@@ -95,11 +96,17 @@ export default {
     return {
       password: "",
       confirmPassword: "",
-      showErrorMessage: false,
+      showErrorMessage: {
+        password: false,
+        confirmPassword: false,
+      },
       showPassword: false,
       showConfirmPassword: false,
-      clickedOutside: false,
       passwordStrength: 0,
+      errorMessage: {
+        password: "Password must be at least 6 characters long",
+        confirmPassword: "Password must be at least 6 characters long",
+      },
     };
   },
   computed: {
@@ -116,36 +123,33 @@ export default {
     },
   },
   methods: {
-    clickOutside() {
-      this.clickedOutside = true;
-      if (!this.isValidPassword()) {
-        this.showErrorMessage = true;
+    clickOutside(field) {
+      if (field === "password") {
+        this.showErrorMessage.password = !this.isValidPassword();
+      } else if (field === "confirmPassword") {
+        this.showErrorMessage.confirmPassword = !this.isValidPassword();
       }
     },
     isValidPassword() {
-      const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$/;
-      return regex.test(this.password);
+      return this.password.length >= 6;
     },
     calculatePasswordStrength() {
       const pairCount = Math.floor(this.password.length / 2);
       this.passwordStrength = Math.min(pairCount, 10);
     },
     submitForm() {
-      if (this.clickedOutside) {
-        this.showErrorMessage = !this.isValidPassword();
-        this.calculatePasswordStrength();
-      }
+      this.showErrorMessage.password = !this.isValidPassword();
+      this.showErrorMessage.confirmPassword = !this.isValidPassword();
+      this.calculatePasswordStrength();
       if (this.isValidForm) {
-        this.$emit('change-form', 'ResetConfirm');
+        this.$emit("change-form", "ResetConfirm");
       }
     },
   },
   watch: {
     password() {
-      if (this.clickedOutside) {
-        this.showErrorMessage = !this.isValidPassword();
-        this.calculatePasswordStrength();
-      }
+      this.showErrorMessage.password = !this.isValidPassword();
+      this.calculatePasswordStrength();
     },
   },
 };

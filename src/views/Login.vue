@@ -1,6 +1,6 @@
 <template>
   <div class="login-wraper">
-    <v-row style="height: 100vh;">
+    <v-row style="height: 100vh; overflow: scroll;">
       <v-col cols="0" md="6" class="pa-0 position-relative d-none d-md-block">
         <v-img
           class="login-img h-100"
@@ -17,11 +17,9 @@
       <v-col cols="12" md="6" class="pa-10">
         <div class="login-form-wrapper">
           <v-img class="logo-img" src="@/assets/logo.png" contain></v-img>
-        <div class="d-flex align-center justify-center h-100">
           <div class="w-100">
             <AuthForms  class="login-forms"/>
           </div>
-        </div>
         </div>
       </v-col>
     </v-row>
@@ -66,7 +64,7 @@ export default {
   height: 100%;
   margin: auto;
   .login-forms{
-    padding: 100px 0;
+    padding: 150px 0;
   }
 }
 .img-overlay-text {

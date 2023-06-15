@@ -1,6 +1,6 @@
 <template>
   <div class="login-wraper">
-    <v-row>
+    <v-row style="height: 100vh;">
       <v-col cols="0" md="6" class="pa-0 position-relative d-none d-md-block">
         <v-img
           class="login-img h-100"

@@ -31,6 +31,7 @@ $font-800 : var(--font-800);
 }
 .text-lg{
   font-size: $text-lg;
+  line-height: 48px;
 }
 .text-xs{
   font-size: $text-xs;

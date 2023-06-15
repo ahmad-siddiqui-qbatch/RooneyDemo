@@ -1,48 +1,29 @@
 <template>
-  <v-row class="h-100">
-    <v-col cols="6" class="pa-0">
+  <v-row>
+    <v-col cols="0" md="6" class="pa-0 position-relative d-none d-md-block">
       <v-img class="login-img h-100" src="@/assets/loginImg.jpeg" cover></v-img>
+      <div class="img-overlay-text">
+        <h2 class="text-lg fw-800 pa-10 text-white mb-10">Roney Innovations is a top 3% ecommerce company who holds direct contracts with some of America's largest retailers.</h2>
+      </div>
     </v-col>
-    <v-col cols="6" class="pa-10">
+    <v-col cols="12" md="6" class="pa-10">
       <v-img class="logo-img" src="@/assets/logo.png" contain></v-img>
           <div class="d-flex align-center justify-center h-100">
             <div class="w-100">
-              <component :is="currentForm" @change-form="changeForm" />
+              <AuthForms/>
             </div>
           </div>
     </v-col>
   </v-row>
 </template>
-
 <script>
-import SignInForm from '@/components/forms/SigninForm.vue';
-import ForgotPasswordForm from '@/components/forms/ForgotPasswordForm.vue';
-import EmailForm from '@/components/forms/EmailForm.vue';
-import NewPasswordForm from '@/components/forms/NewPasswordForm.vue';
-import ResetConfirm from '@/components/forms/ResetConfirm.vue';
-
-export default {
-  components: {
-    SignInForm,
-    ForgotPasswordForm,
-    EmailForm,
-    NewPasswordForm,
-    ResetConfirm,
-  },
-  data() {
-    return {
-      currentForm: 'SignInForm'
-    };
-  },
-  methods: {
-    changeForm(formName) {
-      this.currentForm = formName;
-    }
+import AuthForms from '@/components/AuthForms.vue';
+export default{
+  components : {
+    AuthForms
   }
-};
+}
 </script>
-
-
 <style lang="scss">
 .login-img::before{
   background: rgb(255,255,255);
@@ -61,5 +42,12 @@ export default {
     height: 20px;
   width: auto;
   }
+}
+.img-overlay-text{
+  position: absolute;
+  display: flex;
+  align-items:flex-end;
+  height: 100%;
+  top: 0;
 }
 </style>
